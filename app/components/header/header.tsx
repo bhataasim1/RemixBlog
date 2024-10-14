@@ -45,6 +45,9 @@ export function Header({ user }: HeaderProps) {
             {user?.id ? (
               <>
                 <Avatar color='green' name={user.first_name?.charAt(0)} />
+                <Link to={'/create'}>
+                  <Button variant="outline" color='orange'>Create Post</Button>
+                </Link>
                 <fetcher.Form method='post' action='/logout'>
                   <Button type='submit' variant="filled" color='red'>Log out</Button>
                 </fetcher.Form>
