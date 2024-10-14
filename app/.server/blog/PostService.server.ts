@@ -38,4 +38,8 @@ export class PostServices extends BaseService {
   async getAllPosts() {
     return await this.readAllPosts("Post");
   }
+
+  async getPost(postId: string) {
+    return await this.readPost("Post", postId);
+  }
 }
