@@ -1,5 +1,7 @@
-import { SimpleGrid, Card, Image, Text, Container, AspectRatio, Flex, Pill } from '@mantine/core';
+import { SimpleGrid, Card, Image, Text, Container, AspectRatio, Flex, Pill, Button } from '@mantine/core';
 import classes from './post-card.module.css';
+import { Link, useFetcher, useOutletContext } from '@remix-run/react';
+import { User } from '../../types/types';
 
 type PostCardProps = {
   posts: {
@@ -14,20 +16,34 @@ type PostCardProps = {
 };
 
 export function PostCard({ posts }: PostCardProps) {
+  const fetcher = useFetcher();
+  const user = useOutletContext<User>()
   const cards = posts.map((post) => (
-    <Card key={post.title} p="md" radius="md" component="a" href={String(post.id)} className={classes.card}>
-      <AspectRatio ratio={1080 / 720}>
-        <Image src={post.imageUrl} radius={'lg'} />
-      </AspectRatio>
-      <Flex justify="space-between" align="center" mt={8}>
-        <Text className={classes.title}>
-          {post.title}
+    <Card key={post.title} p="md" radius="md" className={classes.card}>
+      <Link to={`/post/${post.id}`}>
+        <AspectRatio ratio={1080 / 720}>
+          <Image src={post.imageUrl} radius={'lg'} />
+        </AspectRatio>
+        <Flex justify="space-between" align="center" mt={8}>
+          <Text className={classes.title}>
+            {post.title}
+          </Text>
+          <Pill>{post.author}</Pill>
+        </Flex>
+        <Text c="dimmed" size="xs" truncate="end" fw={700} mt="md">
+          {post.content}
         </Text>
-        <Pill>{post.author}</Pill>
-      </Flex>
-      <Text c="dimmed" size="xs" truncate="end" fw={700} mt="md">
-        {post.content}
-      </Text>
+      </Link>
+      {user.id === post.userId && (
+        <Flex justify="end" align="center" mt={8} gap={3}>
+          <Link to={`/edit/${post.id}`} className={classes.link}>
+            <Button size="xs" variant="light" color="blue">Edit</Button>
+          </Link>
+          <fetcher.Form method='post' action={`/delete/${post.id}`}>
+            <Button type='submit' size="xs" variant="light" color="red">Delete</Button>
+          </fetcher.Form>
+        </Flex>
+      )}
     </Card>
   ));
 
