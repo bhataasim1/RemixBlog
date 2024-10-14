@@ -61,7 +61,7 @@ export class BaseService {
     }
   }
 
-  protected async updateTodoItem(collection: Collection, itemId: string, item: Partial<Posts>) {
+  protected async updatePostItem(collection: Collection, itemId: string, item: Partial<Posts>) {
     try {
       return await this.directusClient.request(
         updateItem(collection, itemId, item)
@@ -71,7 +71,7 @@ export class BaseService {
     }
   }
 
-  protected async deleteTodoItem(collection: Collection, itemId: string) {
+  protected async deletePostItem(collection: Collection, itemId: string) {
     try {
       return await this.directusClient.request(
         deleteItem(collection, itemId)
