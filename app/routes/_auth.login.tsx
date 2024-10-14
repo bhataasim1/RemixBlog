@@ -1,5 +1,5 @@
 import { Box, Button, PasswordInput, Text, TextInput } from "@mantine/core";
-import { Form, Link, redirect } from "@remix-run/react";
+import { Form, Link, redirect, useNavigation } from "@remix-run/react";
 import { Lock } from "lucide-react";
 import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { commitSession, getSession } from "../sessions";
@@ -78,6 +78,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export default function LoginPage() {
+  const navigation = useNavigation();
   return (
     <div className="flex flex-col justify-center py-52 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -97,7 +98,7 @@ export default function LoginPage() {
             <Box style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
               <TextInput label="Email" name="email" placeholder="Your email" required />
               <PasswordInput label="Password" name="password" placeholder="Your password" required />
-              <Button type="submit" variant="light" color="orange">
+              <Button type="submit" variant="light" color="orange" loading={navigation.state !== 'idle'}>
                 Log in
               </Button>
               <div className="flex justify-center">
