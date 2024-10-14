@@ -1,7 +1,8 @@
 import { LoaderFunctionArgs, redirect } from "@remix-run/node";
-import { json, useLoaderData } from "@remix-run/react";
+import { json, Link, useFetcher, useLoaderData, useOutletContext } from "@remix-run/react";
 import { PostServices } from "../.server/blog/PostService.server";
-import { Box, Image } from "@mantine/core";
+import { Box, Button, Container, Flex, Image } from "@mantine/core";
+import { User } from "../types/types";
 
 const postServices = new PostServices();
 
@@ -20,8 +21,11 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
 export default function Post() {
   const post = useLoaderData<typeof loader>();
+  const user = useOutletContext<User>();
+  const fetcher = useFetcher();
+
   return (
-    <div className="flex flex-col px-20 py-3 gap-8">
+    <Container size={'xl'} py={'lg'}>
       <div>
         <Image
           src={post.imageUrl}
@@ -30,8 +34,18 @@ export default function Post() {
           h={350}
           fit="cover"
         />
+        {user.id === post.userId && (
+          <Flex justify="end" align="center" mt={8} mb={10} gap={3}>
+            <Link to={`/edit/${post.id}`}>
+              <Button size="xs" variant="light" color="blue">Edit</Button>
+            </Link>
+            <fetcher.Form method='post' action={`/delete/${post.id}`}>
+              <Button type='submit' size="xs" variant="light" color="red">Delete</Button>
+            </fetcher.Form>
+          </Flex>
+        )}
       </div>
-      <Box className="p-5 border rounded-lg" dangerouslySetInnerHTML={{ __html: post.content }} />
-    </div>
+      <Box className="p-5 border rounded-lg mt-5" dangerouslySetInnerHTML={{ __html: post.content }} />
+    </Container>
   )
 }
