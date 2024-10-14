@@ -3,7 +3,6 @@ import { User } from "../types/types";
 type InputData = {
   title: string;
   content: string;
-  featured_image: string;
 }
 
 export function getCurrentDate() {
