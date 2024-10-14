@@ -19,7 +19,7 @@ export async function loader() {
 
 export default function Index() {
   const posts = useLoaderData<typeof loader>();
-  console.log("Loader Data", posts);
+  // console.log("Loader Data", posts);
   return (
     <Box size={'xl'}>
       <PostCard posts={posts} />

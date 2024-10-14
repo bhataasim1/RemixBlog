@@ -52,17 +52,9 @@ export function Header() {
       >
         <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
           <Divider my="sm" />
-
-          <Link to="#" className={classes.link}>
+          <Link to="/" className={classes.link}>
             Home
           </Link>
-          <Link to="#" className={classes.link}>
-            Learn
-          </Link>
-          <Link to="#" className={classes.link}>
-            Academy
-          </Link>
-
           <Divider my="sm" />
 
           <Group justify="center" grow pb="xl" px="md">
