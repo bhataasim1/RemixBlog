@@ -99,4 +99,14 @@ export class BaseService {
       throw new Error("Failed to read items");
     }
   }
+
+  protected async readPost(collection: Collection, postId: string): Promise<Posts> {
+    try {
+      return await this.directusClient.request(
+        readItem(collection, postId)
+      );
+    } catch (error) {
+      throw new Error("Failed to read item");
+    }
+  }
 }
