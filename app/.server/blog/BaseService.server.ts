@@ -45,7 +45,7 @@ export class BaseService {
     }
   }
 
-  protected async readAllItems(collection: Collection, userId: string): Promise<Posts[]> {
+  protected async readAllItemsOfUser(collection: Collection, userId: string): Promise<Posts[]> {
     try {
       return await this.directusClient.request(
         readItems(collection, {
@@ -87,6 +87,16 @@ export class BaseService {
     } catch (error) {
       // console.log(error);
       throw new Error("Failed to upload file");
+    }
+  }
+
+  protected async readAllPosts(collection: Collection): Promise<Posts[]> {
+    try {
+      return await this.directusClient.request(
+        readItems(collection)
+      );
+    } catch (error) {
+      throw new Error("Failed to read items");
     }
   }
 }
