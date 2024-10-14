@@ -1,4 +1,6 @@
+import { Box } from "@mantine/core";
 import type { MetaFunction } from "@remix-run/node";
+import { PostCard } from "../components/post-card/post-card";
 
 export const meta: MetaFunction = () => {
   return [
@@ -9,8 +11,8 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   return (
-    <div>
-      Simple Blog App
-    </div>
+    <Box size={'xl'}>
+      <PostCard />
+    </Box>
   );
 }
