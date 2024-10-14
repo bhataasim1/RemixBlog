@@ -23,20 +23,17 @@ export function Header() {
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
           {/* <MantineLogo size={30} /> */}
-          <Text>Remix Blog App</Text>
+          <Text component='a' href='/'>Remix Blog App</Text>
 
           <Group h="100%" gap={0} visibleFrom="sm">
-            <Link to="#" className={classes.link}>
+            <Link to="/" className={classes.link}>
               Home
-            </Link>
-            <Link to="#" className={classes.link}>
-              Learn
             </Link>
           </Group>
 
           <Group visibleFrom="sm">
-            <Button variant="default">Log in</Button>
-            <Button>Sign up</Button>
+            <Button variant="default" component='a' href='/login'>Log in</Button>
+            <Button variant='outline' component='a' href='/signup'>Sign up</Button>
             <ToggleMode />
           </Group>
 
