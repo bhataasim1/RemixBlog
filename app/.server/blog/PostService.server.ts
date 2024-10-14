@@ -20,7 +20,7 @@ export class PostServices extends BaseService {
   }
 
   async getPostsOfUser(userId: string): Promise<Posts[]> {
-    return await this.readAllItems("Post", userId);
+    return await this.readAllItemsOfUser("Post", userId);
   }
 
   async editPost(postId: string, todo: Partial<Posts>) {
@@ -33,5 +33,9 @@ export class PostServices extends BaseService {
 
   async uploadImage(image: FormData) {
     return await this.uploadFile(image);
+  }
+
+  async getAllPosts() {
+    return await this.readAllPosts("Post");
   }
 }
