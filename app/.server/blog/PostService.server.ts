@@ -23,12 +23,12 @@ export class PostServices extends BaseService {
     return await this.readAllItemsOfUser("Post", userId);
   }
 
-  async editPost(postId: string, todo: Partial<Posts>) {
-    return await this.updateTodoItem("Post", postId, todo);
+  async editPost(postId: string, post: Partial<Posts>) {
+    return await this.updatePostItem("Post", postId, post);
   }
 
   async deletePost(postId: string) {
-    return await this.deleteTodoItem("Post", postId);
+    return await this.deletePostItem("Post", postId);
   }
 
   async uploadImage(image: FormData) {
