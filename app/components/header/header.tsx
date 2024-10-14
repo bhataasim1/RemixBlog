@@ -8,16 +8,25 @@ import {
   ScrollArea,
   rem,
   Text,
+  Avatar,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import classes from './header.module.css';
-import { Link } from '@remix-run/react';
+import { Link, useFetcher } from '@remix-run/react';
 import { ToggleMode } from '../toggle-theme/toggle-mode';
 
+type HeaderProps = {
+  user?: {
+    id?: string;
+    first_name?: string;
+    last_name?: string;
+    email?: string;
+  }
+}
 
-export function Header() {
+export function Header({ user }: HeaderProps) {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
-
+  const fetcher = useFetcher();
   return (
     <Box pb={5}>
       <header className={classes.header}>
@@ -32,9 +41,20 @@ export function Header() {
           </Group>
 
           <Group visibleFrom="sm">
-            <Button variant="default" component='a' href='/login'>Log in</Button>
-            <Button variant='outline' component='a' href='/signup'>Sign up</Button>
             <ToggleMode />
+            {user?.id ? (
+              <>
+                <Avatar color='green' name={user.first_name?.charAt(0)} />
+                <fetcher.Form method='post' action='/logout'>
+                  <Button type='submit' variant="filled" color='red'>Log out</Button>
+                </fetcher.Form>
+              </>
+            ) : (
+              <>
+                <Button variant="default" component='a' href='/login'>Log in</Button>
+                <Button variant='outline' component='a' href='/signup'>Sign up</Button>
+              </>
+            )}
           </Group>
 
           <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
@@ -58,8 +78,16 @@ export function Header() {
           <Divider my="sm" />
 
           <Group justify="center" grow pb="xl" px="md">
-            <Button variant="default">Log in</Button>
-            <Button>Sign up</Button>
+            {user?.id ? (
+              <>
+                <Button variant="filled" color='red' component='a' href='/logout'>Log out</Button>
+              </>
+            ) : (
+              <>
+                <Button variant="default" component='a' href='/login'>Log in</Button>
+                <Button variant='outline' component='a' href='/signup'>Sign up</Button>
+              </>
+            )}
           </Group>
         </ScrollArea>
       </Drawer>
