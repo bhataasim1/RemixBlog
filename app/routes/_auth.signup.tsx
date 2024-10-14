@@ -1,6 +1,6 @@
 import { Box, Button, PasswordInput, Text, TextInput } from "@mantine/core";
 import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
-import { Form, json, Link, redirect, useActionData } from "@remix-run/react";
+import { Form, json, Link, redirect, useActionData, useNavigation } from "@remix-run/react";
 import { UserCircle } from "lucide-react";
 import { AuthService } from "../.server/auth/AuthService";
 import { getSession } from "../sessions";
@@ -43,6 +43,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export default function Signup() {
   const actionData = useActionData<typeof action>();
+  const navigation = useNavigation();
   return (
     <div className="flex flex-col justify-center py-52 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -69,7 +70,7 @@ export default function Signup() {
 
               <PasswordInput label="Password" name="password" placeholder="Your password" error={actionData?.errors?.password} required />
 
-              <Button type="submit" variant="light" color="orange">
+              <Button type="submit" variant="light" color="orange" loading={navigation.state !== 'idle'} >
                 Sign Up
               </Button>
               <div className="flex justify-center">
