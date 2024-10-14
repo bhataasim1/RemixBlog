@@ -8,6 +8,9 @@ import {
 import type { LinksFunction } from "@remix-run/node";
 
 import "./tailwind.css";
+import '@mantine/core/styles.css';
+import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+import { Header } from "./components/header/header";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -30,9 +33,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
+        <ColorSchemeScript />
       </head>
       <body>
-        {children}
+        <MantineProvider>
+          <Header />
+          {children}
+        </MantineProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
