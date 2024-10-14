@@ -1,33 +1,37 @@
-
 import { AddPost, Posts } from "../../types/types";
 import { BaseService } from "./BaseService.server";
 
-export class TodosService extends BaseService {
+export class PostServices extends BaseService {
   constructor() {
     super();
-    this.addTodo = this.addTodo.bind(this);
-    this.editTodo = this.editTodo.bind(this);
-    this.deleteTodo = this.deleteTodo.bind(this);
-    this.getTodosOfUser = this.getTodosOfUser.bind(this);
+    this.addPost = this.addPost.bind(this);
+    this.getUserPost = this.getUserPost.bind(this);
+    this.getPostsOfUser = this.getPostsOfUser.bind(this);
+    this.editPost = this.editPost.bind(this);
+    this.deletePost = this.deletePost.bind(this);
   }
 
-  async addTodo(todo: AddPost): Promise<Posts> {
-    return await this.createItem("Posts", todo);
+  async addPost(post: AddPost): Promise<Posts> {
+    return await this.createItem("Post", post);
   }
 
-  async getUserTodo(userId: string, todoId: string): Promise<Posts> {
-    return await this.readItem("Posts", todoId, userId);
+  async getUserPost(userId: string, postId: string): Promise<Posts> {
+    return await this.readItem("Post", postId, userId);
   }
 
-  async getTodosOfUser(userId: string): Promise<Posts[]> {
-    return await this.readAllItems("Posts", userId);
+  async getPostsOfUser(userId: string): Promise<Posts[]> {
+    return await this.readAllItems("Post", userId);
   }
 
-  async editTodo(todoId: string, todo: Partial<Posts>) {
-    return await this.updateTodoItem("Posts", todoId, todo);
+  async editPost(postId: string, todo: Partial<Posts>) {
+    return await this.updateTodoItem("Post", postId, todo);
   }
 
-  async deleteTodo(todoId: string) {
-    return await this.deleteTodoItem("Posts", todoId);
+  async deletePost(postId: string) {
+    return await this.deleteTodoItem("Post", postId);
+  }
+
+  async uploadImage(image: FormData) {
+    return await this.uploadFile(image);
   }
 }
