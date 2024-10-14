@@ -1,9 +1,9 @@
-import { authentication, createDirectus, createItem, deleteItem, readItem, readItems, rest, updateItem } from "@directus/sdk";
+import { authentication, createDirectus, createItem, deleteItem, readItem, readItems, rest, updateItem, uploadFiles } from "@directus/sdk";
 import { AddPost, Collection, Posts } from "../../types/types";
 
 
 type Schema = {
-  Posts: Posts[];
+  Post: Posts[];
 }
 
 export class BaseService {
@@ -24,6 +24,7 @@ export class BaseService {
         })
       )
     } catch (error) {
+      console.log(error);
       throw new Error("Failed to create item");
     }
   }
@@ -77,6 +78,15 @@ export class BaseService {
       );
     } catch (error) {
       throw new Error("Failed to delete item");
+    }
+  }
+
+  protected async uploadFile(file: FormData) {
+    try {
+      return await this.directusClient.request(uploadFiles(file));
+    } catch (error) {
+      // console.log(error);
+      throw new Error("Failed to upload file");
     }
   }
 }
