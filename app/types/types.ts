@@ -5,17 +5,18 @@ export type Posts = {
   author: string;
   createdAt: Date;
   featuredImage: string;
+  imageUrl: string;
 
   userId: string;
 };
 
 export type FilterTodos = "all" | "pending" | "completed" | "dueDate";
 
-// export type ErrorType = {
-//   title?: string;
-//   description?: string;
-//   dueDate?: string;
-// }
+export type ErrorType = {
+  title?: string;
+  content?: string;
+  // featuredImage?: File | string;
+}
 
 export type User = {
   id: string;
@@ -26,7 +27,7 @@ export type User = {
   role: string;
 }
 
-export type AddPost = Pick<Posts, "title" | "content" | 'author' | "featuredImage" | 'userId'>;
-export type Collection = "Posts";
+export type AddPost = Pick<Posts, "title" | "content" | 'author' | "featuredImage" | 'imageUrl' | 'userId'>;
+export type Collection = "Post";
 
 export type LogoutMode = 'json' | 'cookie' | 'session';
