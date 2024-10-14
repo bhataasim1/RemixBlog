@@ -66,7 +66,7 @@ export default function CreatePost() {
   const actionData = useActionData<typeof action>();
   const { user } = useLoaderData<typeof loader>();
   const navigation = useNavigation();
-  // console.log({ user });
+  console.log({ user });
   return (
     <div className="min-h-screen">
       <main className="max-w-2xl mx-auto px-4 py-8">
