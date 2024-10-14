@@ -61,25 +61,13 @@ export default function Signup() {
           >
             <Box style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
 
-              <TextInput label="First Name" name="first_name" placeholder="First Name" required />
-              {actionData?.errors?.first_name && (
-                <p className="text-red-500 text-sm mt-1">{actionData.errors.first_name}</p>
-              )}
+              <TextInput label="First Name" name="first_name" placeholder="First Name" error={actionData?.errors?.first_name} required />
 
-              <TextInput label="Last Name" name="last_name" placeholder="Last Name" required />
-              {actionData?.errors?.last_name && (
-                <p className="text-red-500 text-sm mt-1">{actionData.errors.last_name}</p>
-              )}
+              <TextInput label="Last Name" name="last_name" placeholder="Last Name" error={actionData?.errors?.last_name} required />
 
-              <TextInput label="Email" name="email" placeholder="Your email" required />
-              {actionData?.errors?.email && (
-                <p className="text-red-500 text-sm mt-1">{actionData.errors.email}</p>
-              )}
+              <TextInput label="Email" name="email" placeholder="Your email" error={actionData?.errors?.email} required />
 
-              <PasswordInput label="Password" name="password" placeholder="Your password" required />
-              {actionData?.errors?.password && (
-                <p className="text-red-500 text-sm mt-1">{actionData.errors.password}</p>
-              )}
+              <PasswordInput label="Password" name="password" placeholder="Your password" error={actionData?.errors?.password} required />
 
               <Button type="submit" variant="light" color="orange">
                 Sign Up
