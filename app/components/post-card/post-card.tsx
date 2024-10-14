@@ -3,7 +3,7 @@ import classes from './post-card.module.css';
 
 type PostCardProps = {
   posts: {
-    id: number;
+    id: number | string;
     title: string;
     content: string;
     author: string;
@@ -15,7 +15,7 @@ type PostCardProps = {
 
 export function PostCard({ posts }: PostCardProps) {
   const cards = posts.map((post) => (
-    <Card key={post.title} p="md" radius="md" component="a" href="#" className={classes.card}>
+    <Card key={post.title} p="md" radius="md" component="a" href={String(post.id)} className={classes.card}>
       <AspectRatio ratio={1080 / 720}>
         <Image src={post.imageUrl} radius={'lg'} />
       </AspectRatio>
