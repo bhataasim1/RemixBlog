@@ -28,7 +28,7 @@ export default function RichEditor({ content, onChange }: RichEditorProps) {
     ],
     content,
 
-    immediatelyRender: true,
+    immediatelyRender: false, // does not support SSR
 
     onUpdate({ editor }) {
       onChange(editor.getHTML());
