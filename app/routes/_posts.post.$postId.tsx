@@ -1,8 +1,9 @@
 import { LoaderFunctionArgs, redirect } from "@remix-run/node";
 import { json, Link, useLoaderData, useOutletContext, useSubmit } from "@remix-run/react";
 import { PostServices } from "../.server/blog/PostService.server";
-import { Box, Button, Container, Flex, Image } from "@mantine/core";
+import { Box, Button, Container, Flex, Image, Text } from "@mantine/core";
 import { User } from "../types/types";
+import { formatDate } from "../utils/formate-date";
 
 const postServices = new PostServices();
 
@@ -46,17 +47,22 @@ export default function Post() {
           h={350}
           fit="cover"
         />
-        {user.id === post.userId && (
-          <Flex justify="end" align="center" mt={8} mb={10} gap={3}>
-            <Link to={`/edit/${post.id}`}>
-              <Button size="xs" variant="light" color="blue">Edit</Button>
-            </Link>
-            {/* <fetcher.Form method='post' action={`/delete/${post.id}`}>
+        <Flex justify="space-between" align={'center'} mt={8} mb={10} gap={3}>
+          <div>
+            <Text size="sm" c={'cyan'}>{formatDate(post.createdAt)}</Text>
+          </div>
+          {user.id === post.userId && (
+            <div className="space-x-3">
+              <Link to={`/edit/${post.id}`}>
+                <Button size="xs" variant="light" color="blue">Edit</Button>
+              </Link>
+              {/* <fetcher.Form method='post' action={`/delete/${post.id}`}>
               <Button type='submit' size="xs" variant="light" color="red">Delete</Button>
             </fetcher.Form> */}
-            <Button size="xs" variant="light" color="red" onClick={handleDeleteTodo}>Delete</Button>
-          </Flex>
-        )}
+              <Button size="xs" variant="light" color="red" onClick={handleDeleteTodo}>Delete</Button>
+            </div>
+          )}
+        </Flex>
       </div>
       <Box className="p-5 border rounded-lg mt-5" dangerouslySetInnerHTML={{ __html: post.content }} />
     </Container>
