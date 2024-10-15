@@ -1,4 +1,4 @@
-import { Button, FileInput, TextInput } from "@mantine/core";
+import { Button, FileInput, Text, TextInput } from "@mantine/core";
 import { Form, json, redirect, useActionData, useLoaderData, useNavigation } from "@remix-run/react";
 import { Image } from "lucide-react";
 
@@ -8,6 +8,8 @@ import { PostServices } from "../.server/blog/PostService.server";
 import { ErrorType } from "../types/types";
 import { validateInputData } from "../utils/validate-inputs";
 import { AuthService } from "../.server/auth/AuthService";
+import RichEditor from "../components/wysiwyg/wysiwyg-editor";
+import { useState } from "react";
 
 const postServices = new PostServices();
 const authServices = new AuthService();
@@ -66,7 +68,10 @@ export default function CreatePost() {
   const actionData = useActionData<typeof action>();
   const { user } = useLoaderData<typeof loader>();
   const navigation = useNavigation();
-  console.log({ user });
+  // console.log({ user });
+
+  const [content, setContent] = useState<string>('');
+  // console.log("{ content }", content);
   return (
     <div className="min-h-screen">
       <main className="max-w-2xl mx-auto px-4 py-8">
@@ -82,7 +87,10 @@ export default function CreatePost() {
             </div>
 
             <div>
-              <TextInput size="md" label="Content" name="content" placeholder="Enter the Post Description" error={actionData?.errors.content} required />
+              {/* <TextInput size="md" label="Content" name="content" placeholder="Enter the Post Description" error={actionData?.errors.content} required /> */}
+              <Text my={5} >Content <Text component="span" c={'red'}>*</Text> </Text>
+              <RichEditor onChange={setContent} />
+              <input type="hidden" name="content" value={content} />
             </div>
 
             <div>
@@ -108,7 +116,7 @@ export default function CreatePost() {
                 type="submit"
                 variant="gradient"
                 fullWidth
-                loading={navigation.state !== 'idle'}
+                loading={navigation.state === 'submitting'}
               >
                 Create Post
               </Button>
