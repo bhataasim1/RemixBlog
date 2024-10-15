@@ -1,4 +1,4 @@
-import { Button, FileInput, TextInput, Image } from "@mantine/core";
+import { Button, FileInput, TextInput, Image, Text } from "@mantine/core";
 import { Form, json, redirect, useActionData, useLoaderData, useNavigation, useOutletContext } from "@remix-run/react";
 import { Image as ImageIcon } from "lucide-react";
 
@@ -7,6 +7,8 @@ import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { PostServices } from "../.server/blog/PostService.server";
 import { ErrorType, User } from "../types/types";
 import { validateInputData } from "../utils/validate-inputs";
+import RichEditor from "../components/wysiwyg/wysiwyg-editor";
+import { useState } from "react";
 
 const postServices = new PostServices();
 
@@ -83,6 +85,7 @@ export default function EditPost() {
   const navigation = useNavigation();
 
   const user = useOutletContext<User>();
+  const [content, setContent] = useState<string>(post.content);
 
   return (
     <div className="min-h-screen">
@@ -99,7 +102,10 @@ export default function EditPost() {
             </div>
 
             <div>
-              <TextInput size="md" label="Content" name="content" placeholder="Enter the Post Content" defaultValue={post.content} error={actionData?.errors.content} required />
+              {/* <TextInput size="md" label="Content" name="content" placeholder="Enter the Post Content" defaultValue={post.content} error={actionData?.errors.content} required /> */}
+              <Text my={5}>Content</Text>
+              <RichEditor content={content} onChange={setContent} />
+              <input type="hidden" name="content" value={content} />
             </div>
 
             <div>
@@ -127,7 +133,7 @@ export default function EditPost() {
                 color="orange"
                 variant="outline"
                 fullWidth
-                loading={navigation.state !== 'idle'}
+                loading={navigation.state === 'submitting'}
               >
                 Update Post
               </Button>
