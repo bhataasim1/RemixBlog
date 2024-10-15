@@ -1,40 +1,54 @@
-# Welcome to Remix!
+# Remix Blog App
 
-- 📖 [Remix docs](https://remix.run/docs)
+A simple and user-friendly platform where anyone can create, edit, update, or delete their posts, and view content shared by others.
 
-## Development
+## Demo
 
-Run the dev server:
 
-```shellscript
-npm run dev
+## Features
+
+- List Posts: Browse all posts easily with a responsive design, using Mantine components for a smooth experience. Posts are fetched via the Directus API.
+
+- View Post: Dive into individual posts, complete with featured images and a clean, stylish format.
+
+- Create Post: Share your thoughts using a sleek form built with Mantine, and submit your post to Directus. Instant feedback lets you know when your post is live!
+
+- Edit Post: Modify your existing posts with pre-filled forms, and get confirmation when your updates are successfully saved.
+
+- Delete Post: Quickly remove posts with a simple delete action.
+
+- Authentication:
+
+  - Login Page: Securely log in via the Directus authentication system.
+  - Registration: New users can sign up seamlessly, and all registered users are assigned a role with the right permissions for managing their blog posts.
+
+- UI & UX: I used Mantine UI, and the interface is responsive, intuitive, and consistent across the entire app. Expect well-designed forms, buttons, Rich text Editor, and more!
+
+## Tech Stack
+
+- Remix Run
+- Directus
+- Mantine Ui
+- Tailwind CSS
+
+## Installation
+
+1. Clone the repository:
+
+```bash
+git clone
 ```
 
-## Deployment
+2. Install dependencies:
 
-First, build your app for production:
-
-```sh
-npm run build
+```bash
+pnpm install
 ```
 
-Then run the app in production mode:
+3. Copy the `.env.example` file to `.env` and fill in the required environment variables.
 
-```sh
-npm start
+4. Start the development server:
+
+```bash
+pnpm run dev
 ```
-
-Now you'll need to pick a host to deploy it to.
-
-### DIY
-
-If you're familiar with deploying Node applications, the built-in Remix app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-- `build/server`
-- `build/client`
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever css framework you prefer. See the [Vite docs on css](https://vitejs.dev/guide/features.html#css) for more information.
