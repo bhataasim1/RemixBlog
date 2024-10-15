@@ -1,6 +1,6 @@
 import { SimpleGrid, Card, Image, Text, Container, AspectRatio, Flex, Pill, Button } from '@mantine/core';
 import classes from './post-card.module.css';
-import { Link, useFetcher, useOutletContext } from '@remix-run/react';
+import { Link, useOutletContext, useSubmit } from '@remix-run/react';
 import { User } from '../../types/types';
 
 type PostCardProps = {
@@ -16,8 +16,10 @@ type PostCardProps = {
 };
 
 export function PostCard({ posts }: PostCardProps) {
-  const fetcher = useFetcher();
+  // const fetcher = useFetcher();
   const user = useOutletContext<User>()
+  const submit = useSubmit();
+  
   const cards = posts.map((post) => (
     <Card key={post.title} p="md" radius="md" className={classes.card}>
       <Link to={`/post/${post.id}`}>
@@ -37,9 +39,18 @@ export function PostCard({ posts }: PostCardProps) {
           <Link to={`/edit/${post.id}`} className={classes.link}>
             <Button size="xs" variant="light" color="blue">Edit</Button>
           </Link>
-          <fetcher.Form method='post' action={`/delete/${post.id}`}>
+          <Button size="xs" variant="light" color="red" onClick={() => {
+            const confirmFirst = confirm("Are you sure you want to delete this Post?");
+            if (confirmFirst) {
+              submit(
+                post.id,
+                { method: "post", action: `/delete/${post.id}` }
+              )
+            }
+          }}>Delete</Button>
+          {/* <fetcher.Form method='post' action={`/delete/${post.id}`}>
             <Button type='submit' size="xs" variant="light" color="red">Delete</Button>
-          </fetcher.Form>
+          </fetcher.Form> */}
         </Flex>
       )}
     </Card>

@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs, redirect } from "@remix-run/node";
-import { json, Link, useFetcher, useLoaderData, useOutletContext } from "@remix-run/react";
+import { json, Link, useLoaderData, useOutletContext, useSubmit } from "@remix-run/react";
 import { PostServices } from "../.server/blog/PostService.server";
 import { Box, Button, Container, Flex, Image } from "@mantine/core";
 import { User } from "../types/types";
@@ -22,7 +22,19 @@ export async function loader({ params }: LoaderFunctionArgs) {
 export default function Post() {
   const post = useLoaderData<typeof loader>();
   const user = useOutletContext<User>();
-  const fetcher = useFetcher();
+  // const fetcher = useFetcher();
+
+  const submit = useSubmit();
+
+  const handleDeleteTodo = () => {
+    const confirmFirst = confirm("Are you sure you want to delete this Post?");
+    if (confirmFirst) {
+      submit(
+        post.id,
+        { method: "post", action: `/delete/${post.id}` }
+      )
+    }
+  }
 
   return (
     <Container size={'xl'} py={'lg'}>
@@ -39,9 +51,10 @@ export default function Post() {
             <Link to={`/edit/${post.id}`}>
               <Button size="xs" variant="light" color="blue">Edit</Button>
             </Link>
-            <fetcher.Form method='post' action={`/delete/${post.id}`}>
+            {/* <fetcher.Form method='post' action={`/delete/${post.id}`}>
               <Button type='submit' size="xs" variant="light" color="red">Delete</Button>
-            </fetcher.Form>
+            </fetcher.Form> */}
+            <Button size="xs" variant="light" color="red" onClick={handleDeleteTodo}>Delete</Button>
           </Flex>
         )}
       </div>
