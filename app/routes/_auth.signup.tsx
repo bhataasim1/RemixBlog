@@ -1,7 +1,6 @@
-import { Box, Button, PasswordInput, Text, TextInput } from "@mantine/core";
+import { Anchor, Button, Container, Paper, PasswordInput, Text, TextInput, Title } from "@mantine/core";
 import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
-import { Form, json, Link, redirect, useActionData, useNavigation } from "@remix-run/react";
-import { UserCircle } from "lucide-react";
+import { Form, json, redirect, useActionData, useNavigation } from "@remix-run/react";
 import { AuthService } from "../.server/auth/AuthService";
 import { getSession } from "../sessions";
 import { validateAuthInputs } from "../utils/validate-inputs";
@@ -45,41 +44,33 @@ export default function Signup() {
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
   return (
-    <div className="flex flex-col justify-center py-52 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="flex justify-center">
-          <div className="w-12 h-12 rounded-full bg-purple-600 flex items-center justify-center">
-            <UserCircle className="size-10 text-white" />
-          </div>
-        </div>
-      </div>
+    <Container size={600} my={40}>
+      <Title ta="center">
+        Get Started with your account
+      </Title>
+      <Text c="dimmed" size="sm" ta="center" mt={5}>
+        Already have an account?{" "}
+        <Anchor size="sm" component="a" href="/login">
+          Login here
+        </Anchor>
+      </Text>
+      <Form
+        method="POST"
+      >
+        <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+          <TextInput label="First Name" name="first_name" placeholder="First Name" error={actionData?.errors?.first_name} mb={20} required />
 
-      <div className="mt-4 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="py-8 px-4 sm:rounded-lg sm:px-10">
-          <Form
-            method="POST"
-            className="space-y-6"
-          >
-            <Box style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          <TextInput label="Last Name" name="last_name" placeholder="Last Name" error={actionData?.errors?.last_name} mb={20} required />
 
-              <TextInput label="First Name" name="first_name" placeholder="First Name" error={actionData?.errors?.first_name} required />
+          <TextInput label="Email" name="email" placeholder="Your email" error={actionData?.errors?.email} mb={20} required />
 
-              <TextInput label="Last Name" name="last_name" placeholder="Last Name" error={actionData?.errors?.last_name} required />
+          <PasswordInput label="Password" name="password" placeholder="Your password" error={actionData?.errors?.password} mb={20} required />
 
-              <TextInput label="Email" name="email" placeholder="Your email" error={actionData?.errors?.email} required />
-
-              <PasswordInput label="Password" name="password" placeholder="Your password" error={actionData?.errors?.password} required />
-
-              <Button type="submit" variant="light" color="orange" loading={navigation.state !== 'idle'} >
-                Sign Up
-              </Button>
-              <div className="flex justify-center">
-                <Text size="sm">Already Have an Account <Link to={'/login'} className="text-blue-600 font-bold">Login</Link> </Text>
-              </div>
-            </Box>
-          </Form>
-        </div>
-      </div>
-    </div>
+          <Button fullWidth mt={'md'} type="submit" variant="light" color="orange" loading={navigation.state === 'submitting'} mb={20}>
+            Create Account
+          </Button>
+        </Paper>
+      </Form>
+    </Container>
   );
 }
