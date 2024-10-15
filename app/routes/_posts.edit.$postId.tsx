@@ -63,16 +63,18 @@ export async function action({ request, params }: ActionFunctionArgs) {
   }
 }
 
-export async function loader({ params }: LoaderFunctionArgs) {
+export async function loader({ request,  params }: LoaderFunctionArgs) {
   const postId = params.postId;
+  const session = await getSession(request.headers.get("Cookie"));
+  const userId = session.get("userId");
 
-  if (!postId) {
+  if (!postId || !userId) {
     return redirect('/');
   }
 
   const post = await postServices.getPost(postId);
 
-  if (!post) {
+  if (!post || post.userId !== userId) {
     return redirect('/');
   }
 
