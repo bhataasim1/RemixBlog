@@ -30,9 +30,7 @@ export function PostCard({ posts }: PostCardProps) {
           </Text>
           <Pill>{post.author}</Pill>
         </Flex>
-        <Text c="dimmed" size="xs" truncate="end" fw={700} mt="md">
-          {post.content}
-        </Text>
+        <Text c="dimmed" size="xs" truncate="end" fw={700} mt="md" dangerouslySetInnerHTML={{ __html: post.content }} />
       </Link>
       {user.id === post.userId && (
         <Flex justify="end" align="center" mt={8} gap={3}>
