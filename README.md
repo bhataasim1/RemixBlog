@@ -5,6 +5,10 @@ A simple and user-friendly platform where anyone can create, edit, update, or de
 ## Demo
 
 
+
+https://github.com/user-attachments/assets/835461ba-06c5-463d-8b2c-b4a09c6d4f7a
+
+
 ## Features
 
 - List Posts: Browse all posts easily with a responsive design, using Mantine components for a smooth experience. Posts are fetched via the Directus API.
