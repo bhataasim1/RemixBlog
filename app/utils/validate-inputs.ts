@@ -16,7 +16,7 @@ export function validateInputData(inputData: InputData) {
     errors.title = "Title is required";
   }
 
-  if (inputData.title.length < 4 || inputData.title.length > 20) {
+  if (inputData.title.length < 4 || inputData.title.length > 50) {
     errors.title = "Title must be between 4 and 20 characters";
   }
 
