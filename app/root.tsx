@@ -16,6 +16,8 @@ import { Header } from "./components/header/header";
 import { getSession } from "./sessions";
 import { User } from "./types/types";
 
+import '@mantine/tiptap/styles.css'; //rich text editor styles
+
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
