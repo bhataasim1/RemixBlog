@@ -9,7 +9,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const session = await getSession(request.headers.get("Cookie"));
   const userId = session.get("userId");
 
-  if (!postId) {
+  const accessToken = session.get("access_token");
+
+  if (!postId || !userId || !accessToken) {
     return redirect('/');
   }
 
@@ -18,7 +20,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     if (post.userId !== userId) {
       return redirect('/');
     } else {
-      await todoService.deletePost(postId);
+      await todoService.deletePost(postId, accessToken);
       return redirect('/');
     }
   } catch (error) {

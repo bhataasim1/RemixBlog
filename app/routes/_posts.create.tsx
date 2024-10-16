@@ -24,8 +24,9 @@ export async function action({ request }: ActionFunctionArgs) {
 
   const session = await getSession(request.headers.get("Cookie"));
   const userId = session.get("userId");
+  const accessToken = session.get("access_token");
 
-  if (!userId) {
+  if (!userId || !accessToken) {
     return redirect('/login');
   }
 
@@ -47,7 +48,7 @@ export async function action({ request }: ActionFunctionArgs) {
     const image = await postServices.uploadImage(imageData);
     // console.log("Image", image);
     const imageUrl = `${process.env.DIRECTUS_URL}/assets/${image.id}`;
-    await postServices.addPost({ title, content, author, featuredImage: image.id, imageUrl, userId });
+    await postServices.addPost({ title, content, author, featuredImage: image.id, imageUrl, userId }, accessToken);
   }
 
   return redirect('/');

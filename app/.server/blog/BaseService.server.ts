@@ -15,8 +15,13 @@ export class BaseService {
       .with(authentication("json"));
   }
 
-  protected async createItem(collection: Collection, item: AddPost): Promise<Posts> {
+  protected async setToken(token: string) {
+    this.directusClient.setToken(token);
+  }
+
+  protected async createItem(collection: Collection, item: AddPost, token: string): Promise<Posts> {
     try {
+      await this.setToken(token)
       return await this.directusClient.request(
         createItem(collection, {
           ...item,
@@ -24,7 +29,7 @@ export class BaseService {
         })
       )
     } catch (error) {
-      // console.log(error);
+      console.log(error);
       throw new Error("Failed to create item");
     }
   }
@@ -61,8 +66,9 @@ export class BaseService {
     }
   }
 
-  protected async updatePostItem(collection: Collection, itemId: string, item: Partial<Posts>) {
+  protected async updatePostItem(collection: Collection, itemId: string, item: Partial<Posts>, token: string) {
     try {
+      await this.setToken(token);
       return await this.directusClient.request(
         updateItem(collection, itemId, item)
       );
@@ -71,8 +77,9 @@ export class BaseService {
     }
   }
 
-  protected async deletePostItem(collection: Collection, itemId: string) {
+  protected async deletePostItem(collection: Collection, itemId: string, token: string) {
     try {
+      await this.setToken(token);
       return await this.directusClient.request(
         deleteItem(collection, itemId)
       );

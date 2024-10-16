@@ -20,10 +20,11 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const session = await getSession(request.headers.get("Cookie"));
   const userId = session.get("userId");
+  const accessToken = session.get("access_token");
 
   const postId = params.postId;
 
-  if (!userId) {
+  if (!userId || !accessToken) {
     return redirect('/');
   }
 
@@ -41,7 +42,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   let imageUrl: string = '';
   try {
     if (!featuredImage.size) {
-      await postServices.editPost(postId, { title, content, author, userId });
+      await postServices.editPost(postId, { title, content, author, userId }, accessToken);
       return redirect(`/`);
     }
 
@@ -53,7 +54,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
       const image = await postServices.uploadImage(imageData);
       imageUrl = `${process.env.DIRECTUS_URL}/assets/${image.id}`;
 
-      await postServices.editPost(postId, { title, content, author, featuredImage: image.id, imageUrl, userId });
+      await postServices.editPost(postId, { title, content, author, featuredImage: image.id, imageUrl, userId }, accessToken);
       return redirect(`/`);
     }
   } catch (error) {
@@ -73,7 +74,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const post = await postServices.getPost(postId);
 
   if (!post || post.userId !== userId) {
-    // return redirect('/');
+    return redirect('/');
   }
 
   return json(post);
