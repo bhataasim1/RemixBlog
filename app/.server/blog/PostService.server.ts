@@ -11,8 +11,8 @@ export class PostServices extends BaseService {
     this.deletePost = this.deletePost.bind(this);
   }
 
-  async addPost(post: AddPost): Promise<Posts> {
-    return await this.createItem("Post", post);
+  async addPost(post: AddPost, refreshToken: string): Promise<Posts> {
+    return await this.createItem("Post", post, refreshToken);
   }
 
   async getUserPost(userId: string, postId: string): Promise<Posts> {
@@ -23,12 +23,12 @@ export class PostServices extends BaseService {
     return await this.readAllItemsOfUser("Post", userId);
   }
 
-  async editPost(postId: string, post: Partial<Posts>) {
-    return await this.updatePostItem("Post", postId, post);
+  async editPost(postId: string, post: Partial<Posts>, accessToken: string): Promise<Posts> {
+    return await this.updatePostItem("Post", postId, post, accessToken);
   }
 
-  async deletePost(postId: string) {
-    return await this.deletePostItem("Post", postId);
+  async deletePost(postId: string, accessToken: string) {
+    return await this.deletePostItem("Post", postId, accessToken);
   }
 
   async uploadImage(image: FormData) {
