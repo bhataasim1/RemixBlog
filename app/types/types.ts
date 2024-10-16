@@ -15,7 +15,7 @@ export type FilterTodos = "all" | "pending" | "completed" | "dueDate";
 export type ErrorType = {
   title?: string;
   content?: string;
-  // featuredImage?: File | string;
+  featuredImage?: string;
 }
 
 export type User = {

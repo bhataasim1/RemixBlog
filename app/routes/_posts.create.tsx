@@ -31,6 +31,10 @@ export async function action({ request }: ActionFunctionArgs) {
 
   const errors: ErrorType = validateInputData({ title, content });
 
+  if (!featuredImage.size) {
+    errors.featuredImage = "Featured image is required";
+  }
+
   if (Object.keys(errors).length > 0) {
     return json({ errors });
   }
@@ -104,6 +108,7 @@ export default function CreatePost() {
               rightSectionPointerEvents="none"
               mt="md"
               accept="image/*"
+              error={actionData?.errors.featuredImage}
               required
             />
           </div>

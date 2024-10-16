@@ -1,5 +1,5 @@
 import { Anchor, Button, Container, Paper, PasswordInput, Text, TextInput, Title } from "@mantine/core";
-import { Form, redirect, useNavigation } from "@remix-run/react";
+import { Form, Link, redirect, useNavigation } from "@remix-run/react";
 import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { commitSession, getSession } from "../sessions";
 import { AuthService } from "../.server/auth/AuthService";
@@ -85,7 +85,7 @@ export default function LoginPage() {
       </Title>
       <Text c="dimmed" size="sm" ta="center" mt={5}>
         Do not have an account yet?{" "}
-        <Anchor size="sm" component="a" href="/signup">
+        <Anchor size="sm" component={Link} to="/signup">
           Create account
         </Anchor>
       </Text>

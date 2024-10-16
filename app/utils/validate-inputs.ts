@@ -3,6 +3,7 @@ import { User } from "../types/types";
 type InputData = {
   title: string;
   content: string;
+  featuredImage?: File | null;
 }
 
 export function getCurrentDate() {
@@ -11,7 +12,7 @@ export function getCurrentDate() {
 }
 
 export function validateInputData(inputData: InputData) {
-  const errors: Partial<InputData> = {};
+  const errors: Partial<Record<keyof InputData, string>> = {};
   if (!inputData.title) {
     errors.title = "Title is required";
   }
@@ -23,6 +24,10 @@ export function validateInputData(inputData: InputData) {
   if (!inputData.content) {
     errors.content = "Content is required";
   }
+
+  // if (!inputData.featuredImage) {
+  //   errors.featuredImage = "Featured image is required";
+  // }
 
   if (Object.keys(errors).length > 0) {
     return errors;
