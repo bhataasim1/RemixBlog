@@ -3,6 +3,7 @@ import { User } from "../types/types";
 type InputData = {
   title: string;
   content: string;
+  featuredImage?: File | null;
 }
 
 export function getCurrentDate() {
@@ -11,18 +12,22 @@ export function getCurrentDate() {
 }
 
 export function validateInputData(inputData: InputData) {
-  const errors: Partial<InputData> = {};
+  const errors: Partial<Record<keyof InputData, string>> = {};
   if (!inputData.title) {
     errors.title = "Title is required";
   }
 
-  if (inputData.title.length < 4 || inputData.title.length > 20) {
+  if (inputData.title.length < 4 || inputData.title.length > 50) {
     errors.title = "Title must be between 4 and 20 characters";
   }
 
   if (!inputData.content) {
     errors.content = "Content is required";
   }
+
+  // if (!inputData.featuredImage) {
+  //   errors.featuredImage = "Featured image is required";
+  // }
 
   if (Object.keys(errors).length > 0) {
     return errors;

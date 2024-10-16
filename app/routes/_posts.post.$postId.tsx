@@ -39,7 +39,7 @@ export default function Post() {
 
   return (
     <Container size={'xl'} py={'lg'}>
-      <div>
+      <Box>
         <Image
           src={post.imageUrl}
           alt={post.title}
@@ -48,22 +48,20 @@ export default function Post() {
           fit="cover"
         />
         <Flex justify="space-between" align={'center'} mt={8} mb={10} gap={3}>
-          <div>
+          <Box>
             <Text size="sm" c={'cyan'}>{formatDate(post.createdAt)}</Text>
-          </div>
+          </Box>
           {user.id === post.userId && (
-            <div className="space-x-3">
-              <Link to={`/edit/${post.id}`}>
-                <Button size="xs" variant="light" color="blue">Edit</Button>
-              </Link>
+            <Box>
+              <Button size="xs" variant="light" component={Link} to={`/edit/${post.id}`} mr={5} color="blue">Edit</Button>
               {/* <fetcher.Form method='post' action={`/delete/${post.id}`}>
               <Button type='submit' size="xs" variant="light" color="red">Delete</Button>
             </fetcher.Form> */}
               <Button size="xs" variant="light" color="red" onClick={handleDeleteTodo}>Delete</Button>
-            </div>
+            </Box>
           )}
         </Flex>
-      </div>
+      </Box>
       <Box className="p-5 border rounded-lg mt-5" dangerouslySetInnerHTML={{ __html: post.content }} />
     </Container>
   )

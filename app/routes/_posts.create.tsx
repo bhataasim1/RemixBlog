@@ -1,4 +1,4 @@
-import { Button, FileInput, Text, TextInput } from "@mantine/core";
+import { Button, Container, FileInput, Paper, Text, TextInput, Title } from "@mantine/core";
 import { Form, json, redirect, useActionData, useLoaderData, useNavigation } from "@remix-run/react";
 import { Image } from "lucide-react";
 
@@ -30,6 +30,10 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 
   const errors: ErrorType = validateInputData({ title, content });
+
+  if (!featuredImage.size) {
+    errors.featuredImage = "Featured image is required";
+  }
 
   if (Object.keys(errors).length > 0) {
     return json({ errors });
@@ -64,6 +68,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return json({ user });
 }
 
+
 export default function CreatePost() {
   const actionData = useActionData<typeof action>();
   const { user } = useLoaderData<typeof loader>();
@@ -73,57 +78,60 @@ export default function CreatePost() {
   const [content, setContent] = useState<string>('');
   // console.log("{ content }", content);
   return (
-    <div className="min-h-screen">
-      <main className="max-w-2xl mx-auto px-4 py-8">
-        <div className="rounded-xl shadow-sm border p-8">
-          <div className="mb-6">
-            <h1 className="text-2xl font-bold">Create New Post</h1>
-            <p className="mt-1">Fill in the details for your new Post</p>
+    <Container size={600} my={40}>
+      <Title ta="center">
+        Create New Post
+      </Title>
+      <Form
+        method="POST"
+        encType="multipart/form-data"
+      >
+        <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+
+          <div>
+            <TextInput size="md" label="Title" name="title" placeholder="Enter the Post Title" error={actionData?.errors.title} mb={10} required />
           </div>
 
-          <Form method="POST" className="space-y-6" encType="multipart/form-data">
-            <div>
-              <TextInput size="md" label="Title" name="title" placeholder="Enter the Post Title" error={actionData?.errors.title} required />
-            </div>
+          <div>
+            {/* <TextInput size="md" label="Content" name="content" placeholder="Enter the Post Description" error={actionData?.errors.content} required /> */}
+            <Text my={5} >Content <Text component="span" c={'red'}>*</Text> </Text>
+            <RichEditor onChange={setContent} />
+            <input type="hidden" name="content" value={content} />
+          </div>
 
-            <div>
-              {/* <TextInput size="md" label="Content" name="content" placeholder="Enter the Post Description" error={actionData?.errors.content} required /> */}
-              <Text my={5} >Content <Text component="span" c={'red'}>*</Text> </Text>
-              <RichEditor onChange={setContent} />
-              <input type="hidden" name="content" value={content} />
-            </div>
+          <div>
+            <FileInput
+              rightSection={<Image size={18} />}
+              label="Post Featured Image"
+              name="featuredImage"
+              placeholder="Upload Featured Image..."
+              rightSectionPointerEvents="none"
+              mt="md"
+              accept="image/*"
+              error={actionData?.errors.featuredImage}
+              required
+            />
+          </div>
 
-            <div>
-              <FileInput
-                rightSection={<Image size={18} />}
-                label="Post Featured Image"
-                name="featuredImage"
-                placeholder="Upload Featured Image..."
-                rightSectionPointerEvents="none"
-                mt="md"
-                accept="image/*"
-                required
-              />
-            </div>
+          <div>
+            <TextInput size="md" label="Author" placeholder="Enter the Author Name" defaultValue={`${user.first_name} ${user.last_name}`} mt={10} required disabled />
+            <input type="hidden" name="author" value={`${user.first_name} ${user.last_name}`} />
+          </div>
 
-            <div>
-              <TextInput size="md" label="Author" placeholder="Enter the Author Name" defaultValue={`${user.first_name} ${user.last_name}`} required disabled />
-              <input type="hidden" name="author" value={`${user.first_name} ${user.last_name}`} />
-            </div>
-
-            <div className="flex gap-4">
-              <Button
-                type="submit"
-                variant="gradient"
-                fullWidth
-                loading={navigation.state === 'submitting'}
-              >
-                Create Post
-              </Button>
-            </div>
-          </Form>
-        </div>
-      </main>
-    </div>
+          <div>
+            <Button
+              type="submit"
+              color="orange"
+              fullWidth
+              variant="outline"
+              loading={navigation.state === 'submitting'}
+              mt={15}
+            >
+              Create Post
+            </Button>
+          </div>
+        </Paper>
+      </Form>
+    </Container>
   );
 }

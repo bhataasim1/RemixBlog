@@ -1,17 +1,15 @@
-import { Button, FileInput, TextInput, Image, Text } from "@mantine/core";
-import { Form, json, redirect, useActionData, useLoaderData, useNavigation, useOutletContext } from "@remix-run/react";
+import { Button, FileInput, TextInput, Image, Text, Container, Title, Paper } from "@mantine/core";
+import { Form, json, redirect, useActionData, useLoaderData, useNavigation } from "@remix-run/react";
 import { Image as ImageIcon } from "lucide-react";
-
 import { getSession } from "../sessions";
 import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { PostServices } from "../.server/blog/PostService.server";
-import { ErrorType, User } from "../types/types";
+import { ErrorType } from "../types/types";
 import { validateInputData } from "../utils/validate-inputs";
 import RichEditor from "../components/wysiwyg/wysiwyg-editor";
 import { useState } from "react";
 
 const postServices = new PostServices();
-
 
 export async function action({ request, params }: ActionFunctionArgs) {
   const formData = await request.formData();
@@ -63,7 +61,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   }
 }
 
-export async function loader({ request,  params }: LoaderFunctionArgs) {
+export async function loader({ request, params }: LoaderFunctionArgs) {
   const postId = params.postId;
   const session = await getSession(request.headers.get("Cookie"));
   const userId = session.get("userId");
@@ -75,7 +73,7 @@ export async function loader({ request,  params }: LoaderFunctionArgs) {
   const post = await postServices.getPost(postId);
 
   if (!post || post.userId !== userId) {
-    return redirect('/');
+    // return redirect('/');
   }
 
   return json(post);
@@ -86,63 +84,53 @@ export default function EditPost() {
   const post = useLoaderData<typeof loader>();
   const navigation = useNavigation();
 
-  const user = useOutletContext<User>();
   const [content, setContent] = useState<string>(post.content);
 
   return (
-    <div className="min-h-screen">
-      <main className="max-w-2xl mx-auto px-4 py-8">
-        <div className="rounded-xl shadow-sm border p-8">
-          <div className="mb-6">
-            <h1 className="text-2xl font-bold">Create New Post</h1>
-            <p className="mt-1">Fill in the details for your new Post</p>
-          </div>
+    <Container size={600} my={40}>
+      <Title ta="center">
+        Edit your Post
+      </Title>
+      <Form
+        method="POST"
+        encType="multipart/form-data"
+      >
+        <Paper withBorder shadow="md" p={30} mt={30} radius="md">
 
-          <Form method="POST" className="space-y-6" encType="multipart/form-data">
-            <div>
-              <TextInput size="md" label="Title" name="title" placeholder="Enter the Post Title" defaultValue={post.title} error={actionData?.errors.title} required />
-            </div>
+          <TextInput size="md" label="Title" name="title" placeholder="Enter the Post Title" defaultValue={post.title} error={actionData?.errors.title} mb={10} />
 
-            <div>
-              {/* <TextInput size="md" label="Content" name="content" placeholder="Enter the Post Content" defaultValue={post.content} error={actionData?.errors.content} required /> */}
-              <Text my={5}>Content</Text>
-              <RichEditor content={content} onChange={setContent} />
-              <input type="hidden" name="content" value={content} />
-            </div>
+          {/* <TextInput size="md" label="Content" name="content" placeholder="Enter the Post Content" defaultValue={post.content} error={actionData?.errors.content} required /> */}
+          <Text my={5} mb={10}>Content</Text>
+          <RichEditor content={content} onChange={setContent} />
+          <input type="hidden" name="content" value={content} />
 
-            <div>
-              <Image src={post.imageUrl} alt={post.title} radius={'lg'} h={300} fit="cover" />
-              <FileInput
-                rightSection={<ImageIcon size={18} />}
-                label="Post Featured Image"
-                name="featuredImage"
-                placeholder="Upload Featured Image..."
-                rightSectionPointerEvents="none"
-                mt="md"
-                accept="image/*"
-                required
-              />
-            </div>
+          <Image src={post.imageUrl} alt={post.title} radius={'lg'} h={300} fit="cover" mt={10} />
+          <FileInput
+            rightSection={<ImageIcon size={18} />}
+            label="Post Featured Image"
+            name="featuredImage"
+            placeholder="Upload Featured Image..."
+            rightSectionPointerEvents="none"
+            mt="md"
+            accept="image/*"
+            mb={10}
+          />
 
-            <div>
-              <TextInput size="md" label="Author" placeholder="Enter the Author Name" defaultValue={`${user.first_name} ${user.last_name}`} required disabled />
-              <input type="hidden" name="author" value={`${user.first_name} ${user.last_name}`} />
-            </div>
+          <TextInput size="md" label="Author" placeholder="Enter the Author Name" defaultValue={post.author} disabled mb={10} />
+          <input type="hidden" name="author" value={post.author} />
 
-            <div className="flex gap-4">
-              <Button
-                type="submit"
-                color="orange"
-                variant="outline"
-                fullWidth
-                loading={navigation.state === 'submitting'}
-              >
-                Update Post
-              </Button>
-            </div>
-          </Form>
-        </div>
-      </main>
-    </div>
+          <Button
+            type="submit"
+            color="orange"
+            variant="outline"
+            fullWidth
+            loading={navigation.state === 'submitting'}
+            mt={15}
+          >
+            Update Post
+          </Button>
+        </Paper>
+      </Form>
+    </Container>
   );
 }
